@@ -323,16 +323,21 @@ def message_callback(word, word_eol, userdata, attributes):
                 len(chancolortable[net, chan])) + " for channel " + chan + " on network " + net, "COLORTABLE")
         ctable = chancolortable[net, chan]
         dmsg("COLORTABLE for " + chan + " on " + net + " = " + str(ctable), "COLORTABLE")
-        if nick.replace('\x0f','') != "Ruby" and nick.replace('\x0f','')  !="R":
+        if nick.replace('\x0f','') != "cord" and nick.replace('\x0f','')  !="R" and '<' :
             color = get_color(ctable, nick.replace('\x0f','').lower())
             newnick = ecs('o') + col(color) + nick
             word[0] = newnick
         else:
-            color = get_color(ctable, nicks[0].replace('\x02','').replace('\x0f','').replace('<','').replace('>','').lower())
-            newnick = ecs('o') + col(color) + nicks[0].replace('\x02','').replace('\x0f','').replace('<','').replace('>','')
-            word[1] = word[1].replace(nicks[0], '').strip()
-            del nicks[0]
-            word[0] = newnick
+            try:
+                color = get_color(ctable, nicks[0].replace('\x02','').replace('\x0f','').replace('<','').replace('>','').lower())
+                newnick = ecs('o') + col(color) + nicks[0].replace('\x02','').replace('\x0f','').replace('<','').replace('>','')
+                word[1] = word[1].replace(nicks[0], '').strip()
+                del nicks[0]
+                word[0] = newnick
+            except Exception:
+                color = get_color(ctable, nick.replace('\x0f', '').lower())
+                newnick = ecs('o') + col(color) + nick
+                word[0] = newnick
         for stuff in nicks:
             dmsg(stuff.replace('\x02','').replace('\x0f','').replace('<','').replace('>','').lower(), "NICK?")
             color = get_color(ctable,stuff.replace('\x02','').replace('\x0f','').replace('<','').replace('>','').lower())
